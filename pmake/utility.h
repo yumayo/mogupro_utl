@@ -20,3 +20,4 @@ bool isFile( std::string const& fullPath );
 bool makeDirectory( std::string const& fullPath );
 std::string convertCRLF( std::string targetStr );
 std::string convertLF( std::string targetStr );
+bool findComment( std::string const& line );

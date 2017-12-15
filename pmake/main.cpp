@@ -11,13 +11,10 @@
 #include <algorithm>
 using namespace std;
 std::string eventHPP = "#pragma once\n";
-std::string deliverHPP = "#pragma once\n";
 std::string requestHPP = "#pragma once\n";
 std::string responseHPP = "#pragma once\n";
 std::vector<std::string> eventClass;
 std::vector<std::string> eventEnum;
-std::vector<std::string> deliverEnum;
-std::vector<std::string> deliverClass;
 std::vector<std::string> requestClass;
 std::vector<std::string> requestEnum;
 std::vector<std::string> responseClass;
@@ -26,14 +23,10 @@ std::string templateIncludeFile;
 std::string templateSourceFile;
 void packetWriteIncludeFile( std::string packetType, std::string className, std::string enumName )
 {
-    std::string append = "#include<Network/Packet/" + packetType + "/" + className + ".h>\n";
+    std::string append = "#include <Network/Packet/" + packetType + "/" + className + ".h>\n";
     if ( packetType == "Event" )
     {
         eventHPP += append;
-    }
-    else if ( packetType == "Deliver" )
-    {
-        deliverHPP += append;
     }
     else if ( packetType == "Request" )
     {
@@ -105,12 +98,8 @@ void packet( std::string packetType, std::string className, std::string enumName
 }
 void lineReader( std::string line )
 {
-    auto commentPos = line.find( "//" );
-    if ( commentPos != line.npos )
-    {
-        // コメントが有る箇所はスルーします。
-        return;
-    }
+	if ( findComment( line ) ) return;
+
     auto eventPos = line.find( "EVE_" );
     if ( eventPos != line.npos )
     {
@@ -120,17 +109,6 @@ void lineReader( std::string line )
         string className = enumToClassName( enumName );
         eventClass.emplace_back( className );
         packet( "Event", className, enumName );
-        return;
-    }
-    auto deliverPos = line.find( "DLI_" );
-    if ( deliverPos != line.npos )
-    {
-        auto commaPos = line.find( "," );
-        string enumName = line.substr( deliverPos, commaPos - deliverPos );
-        deliverEnum.emplace_back( enumName );
-        string className = enumToClassName( enumName );
-        deliverClass.emplace_back( className );
-        packet( "Deliver", className, enumName );
         return;
     }
     auto requestPos = line.find( "REQ_" );
@@ -299,17 +277,6 @@ void udpManagerReplace( )
         replace( &t, "_TEMPLATE_VALUE_", tyValue );
         source += t;
     }
-    for ( int i = 0; i < deliverEnum.size( ); ++i )
-    {
-        auto tyType = "Deliver";
-        auto tyEnum = deliverEnum[i];
-        auto tyValue = deliverClass[i].substr( 1 );
-        auto t = tyCPP;
-        replace( &t, "_TEMPLATE_ENUM_", tyEnum );
-        replace( &t, "_PACKET_TYPE_", tyType );
-        replace( &t, "_TEMPLATE_VALUE_", tyValue );
-        source += t;
-    }
     for ( int i = 0; i < requestEnum.size( ); ++i )
     {
         auto tyType = "Request";
@@ -366,13 +333,11 @@ int main( int argv, char* argc [ ] )
         getCurrentDirectory( ) + "\\include\\Network",
         getCurrentDirectory( ) + "\\include\\Network\\Packet",
         getCurrentDirectory( ) + "\\include\\Network\\Packet\\Event",
-        getCurrentDirectory( ) + "\\include\\Network\\Packet\\Deliver",
         getCurrentDirectory( ) + "\\include\\Network\\Packet\\Request",
         getCurrentDirectory( ) + "\\include\\Network\\Packet\\Response",
         getCurrentDirectory( ) + "\\src\\Network",
         getCurrentDirectory( ) + "\\src\\Network\\Packet",
         getCurrentDirectory( ) + "\\src\\Network\\Packet\\Event",
-        getCurrentDirectory( ) + "\\src\\Network\\Packet\\Deliver",
         getCurrentDirectory( ) + "\\src\\Network\\Packet\\Request",
         getCurrentDirectory( ) + "\\src\\Network\\Packet\\Response",
     };
@@ -407,13 +372,11 @@ int main( int argv, char* argc [ ] )
 
     // Event.hppなどの定義まとめを置き換える。
     hppReplace( "Event", eventHPP );
-    hppReplace( "Deliver", deliverHPP );
     hppReplace( "Request", requestHPP );
     hppReplace( "Response", responseHPP );
 
     // cEventManager.hなどのメンバーを置き換える。
     managerReplace( "Event", eventClass );
-    managerReplace( "Deliver", deliverClass );
     managerReplace( "Request", requestClass );
     managerReplace( "Response", responseClass );
 

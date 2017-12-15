@@ -204,3 +204,13 @@ std::string convertLF( std::string targetStr )
     replace( &targetStr, "\r", "\n" );
     return targetStr;
 }
+
+bool findComment( std::string const & line )
+{
+	auto commentPos = line.find( "//" );
+	if ( commentPos != line.npos )
+	{
+		return true;
+	}
+	return false;
+}
