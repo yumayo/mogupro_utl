@@ -205,13 +205,9 @@ bool vcxproj( std::string path )
         return false;
     }
 
-    auto node = doc.first_node( )->first_node( );
-    for ( int i = 0; i <= 23; ++i )
-    {
-        node = node->next_sibling( );
-    }
-    auto compileFileNode = node;
-    auto includeFileNode = node->next_sibling( );
+	auto nodeLast = doc.first_node( )->last_node( );
+    auto compileFileNode = nodeLast->previous_sibling( )->previous_sibling( )->previous_sibling( );
+    auto includeFileNode = nodeLast->previous_sibling( )->previous_sibling( );
 
     for ( auto o : srcFileSearch.windowsNotationFiles( ) )
     {

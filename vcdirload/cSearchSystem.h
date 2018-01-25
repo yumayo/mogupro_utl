@@ -131,7 +131,7 @@ private:
             pos = src->find( prev, pos + write.length( ) );
         }
     }
-    void searchDirectory( std::tr2::sys::path const& path )
+    void searchDirectory( std::experimental::filesystem::path const& path )
     {
         std::string src = path.string( ).substr( mWindowsNotationRoot.size( ) + 1 );
         src = multi_to_utf8_winapi( src );
@@ -140,7 +140,7 @@ private:
         mUnixNotationDirectorys.emplace_back( src );
         searchPath( path );
     }
-    void searchFile( std::tr2::sys::path const& path )
+    void searchFile( std::experimental::filesystem::path const& path )
     {
         std::string src = path.string( ).substr( mWindowsNotationRoot.size( ) + 1 );
         src = multi_to_utf8_winapi( src );
@@ -148,23 +148,23 @@ private:
         replace( &src, "\\", "/" );
         mUnixNotationFiles.emplace_back( src );
     }
-    void searchPath( std::tr2::sys::path const& path )
+    void searchPath( std::experimental::filesystem::path const& path )
     {
-        std::tr2::sys::path p( path ); // 列挙の起点
-        std::for_each( std::tr2::sys::directory_iterator( p ), std::tr2::sys::directory_iterator( ), [ this ] ( std::tr2::sys::path const& p )
+        std::experimental::filesystem::path p( path ); // 列挙の起点
+        std::for_each( std::experimental::filesystem::directory_iterator( p ), std::experimental::filesystem::directory_iterator( ), [ this ] ( std::experimental::filesystem::path const& p )
         {
             // ファイルなら...
-            if ( std::tr2::sys::is_regular_file( p ) )
+            if ( std::experimental::filesystem::is_regular_file( p ) )
             {
                 searchFile( p );
             }
         } );
 
-        p = std::tr2::sys::path( path ); // 列挙の起点
-        std::for_each( std::tr2::sys::directory_iterator( p ), std::tr2::sys::directory_iterator( ), [ this ] ( std::tr2::sys::path const& p )
+        p = std::experimental::filesystem::path( path ); // 列挙の起点
+        std::for_each( std::experimental::filesystem::directory_iterator( p ), std::experimental::filesystem::directory_iterator( ), [ this ] ( std::experimental::filesystem::path const& p )
         {
             // ディレクトリなら...
-            if ( std::tr2::sys::is_directory( p ) )
+            if ( std::experimental::filesystem::is_directory( p ) )
             {
                 searchDirectory( p );
             }

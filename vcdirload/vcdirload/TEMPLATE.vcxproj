@@ -8,6 +8,14 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="FastRelease|Win32">
+      <Configuration>FastRelease</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="FastRelease|x64">
+      <Configuration>FastRelease</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -29,9 +37,23 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FastRelease|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FastRelease|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
@@ -55,7 +77,13 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='FastRelease|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='FastRelease|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
@@ -72,9 +100,13 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='FastRelease|Win32'">$(ProjectDir)build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)build\$(Platform)\$(Configuration)\intermediate\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='FastRelease|Win32'">$(ProjectDir)build\$(Platform)\$(Configuration)\intermediate\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='FastRelease|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='FastRelease|x64'">false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)build\$(Platform)\$(Configuration)\</OutDir>
@@ -84,10 +116,14 @@
     <OutDir>$(ProjectDir)build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)build\$(Platform)\$(Configuration)\intermediate\</IntDir>
   </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FastRelease|x64'">
+    <OutDir>$(ProjectDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)build\$(Platform)\$(Configuration)\intermediate\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include;..\..\librarys\boost\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include;..\..\librarys\boost\include;..\..\librarys\MathGeolib\include;..\..\librarys\Gamepad\include;..\..\librarys\FBX\FBX SDK\2018.1.1\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -101,8 +137,8 @@
       <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\librarys\cinder\lib\msw\$(PlatformTarget)\;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\boost\lib\$(PlatformTarget)\$(PlatformToolset)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\lib;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\boost\lib\$(PlatformTarget)\$(PlatformToolset)\;..\..\librarys\MathGeoLib\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\Gamepad\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\FBX\FBX SDK\2018.1.1\lib\vs2015\$(PlatformTarget)\$(Configuration)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -114,21 +150,22 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include;..\..\librarys\boost\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include;..\..\librarys\boost\include;..\..\librarys\MathGeolib\include;..\..\librarys\Gamepad\include;..\..\librarys\FBX\FBX SDK\2018.1.1\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\librarys\cinder\lib\msw\$(PlatformTarget)\;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\boost\lib\$(PlatformTarget)\$(PlatformToolset)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\lib;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\boost\lib\$(PlatformTarget)\$(PlatformToolset)\;..\..\librarys\MathGeoLib\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\Gamepad\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\FBX\FBX SDK\2018.1.1\lib\vs2015\$(PlatformTarget)\$(Configuration)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -138,13 +175,19 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include;..\..\librarys\boost\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include;..\..\librarys\boost\include;..\..\librarys\MathGeolib\include;..\..\librarys\Gamepad\include;..\..\librarys\FBX\FBX SDK\2018.1.1\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Full</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -153,27 +196,34 @@
       <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\librarys\cinder\lib\msw\$(PlatformTarget)\;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\boost\lib\$(PlatformTarget)\$(PlatformToolset)\</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\lib;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\boost\lib\$(PlatformTarget)\$(PlatformToolset)\;..\..\librarys\MathGeoLib\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\Gamepad\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\FBX\FBX SDK\2018.1.1\lib\vs2015\$(PlatformTarget)\$(Configuration)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding />
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FastRelease|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include;..\..\librarys\boost\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include;..\..\librarys\boost\include;..\..\librarys\MathGeolib\include;..\..\librarys\Gamepad\include;..\..\librarys\FBX\FBX SDK\2018.1.1\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PrecompiledHeader />
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -182,15 +232,91 @@
       <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\librarys\cinder\lib\msw\$(PlatformTarget)\;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\boost\lib\$(PlatformTarget)\$(PlatformToolset)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\lib;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\boost\lib\$(PlatformTarget)\$(PlatformToolset)\;..\..\librarys\MathGeoLib\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\Gamepad\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\FBX\FBX SDK\2018.1.1\lib\vs2015\$(PlatformTarget)\release\</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding />
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include;..\..\librarys\boost\include;..\..\librarys\MathGeolib\include;..\..\librarys\Gamepad\include;..\..\librarys\FBX\FBX SDK\2018.1.1\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Full</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+       <OmitFramePointers>false</OmitFramePointers>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+    </ClCompile>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\lib;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\boost\lib\$(PlatformTarget)\$(PlatformToolset)\;..\..\librarys\MathGeoLib\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\Gamepad\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\FBX\FBX SDK\2018.1.1\lib\vs2015\$(PlatformTarget)\$(Configuration)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FastRelease|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include;..\..\librarys\boost\include;..\..\librarys\MathGeolib\include;..\..\librarys\Gamepad\include;..\..\librarys\FBX\FBX SDK\2018.1.1\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+    </ClCompile>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..\include;..\..\librarys\cinder\include</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\lib;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\;..\..\librarys\cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\boost\lib\$(PlatformTarget)\$(PlatformToolset)\;..\..\librarys\MathGeoLib\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\Gamepad\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\librarys\FBX\FBX SDK\2018.1.1\lib\vs2015\$(PlatformTarget)\release\</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -200,8 +326,14 @@
     <ProjectReference Include="..\..\librarys\cinder\proj\vc2017\cinder.vcxproj">
       <Project>{92b5be70-dcaa-40e4-92d8-cc2b95aa28be}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\librarys\Gamepad\proj\vc2017\Gamepad.vcxproj">
+      <Project>{0a9f4b08-5c1b-4305-bc63-b3cae9c32aff}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\librarys\MathGeoLib\proj\vc2017\MathGeoLib.vcxproj">
+      <Project>{eceb573d-7021-4094-a82a-41d2588a5535}</Project>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup/>
+  <ItemGroup />
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
