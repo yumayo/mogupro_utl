@@ -183,7 +183,7 @@ std::vector<string> beginEndSpliter( std::string pullPath )
     {
         if ( begin )
         {
-            if ( line.find( "P=====END=====P" ) != line.npos )
+            if ( line.find( "PACKET_TEMPLATE_END" ) != line.npos )
             {
                 end = true;
             }
@@ -191,7 +191,7 @@ std::vector<string> beginEndSpliter( std::string pullPath )
         if ( !begin )
         {
             beforeBegin += line + "\n";
-            if ( line.find( "P=====BEGIN=====P" ) != line.npos )
+            if ( line.find( "PACKET_TEMPLATE_BEGIN" ) != line.npos )
             {
                 begin = true;
             }
@@ -203,110 +203,106 @@ std::vector<string> beginEndSpliter( std::string pullPath )
     }
     return { beforeBegin, afterEnd };
 }
-void managerReplace( std::string type, std::vector<std::string> typeClass )
+void udpManagerHeaderReplace( )
 {
-    string headerFullPath = getCurrentDirectory( ) + "\\include\\Network\\c_TYPE_Manager.h";
-    replace( &headerFullPath, "_TYPE_", type );
-    auto h = beginEndSpliter( headerFullPath );
+	auto fileFullPath = getCurrentDirectory( ) + "\\include\\Network\\cUDPManager.h";
+	auto file = beginEndSpliter( fileFullPath );
 
-    string soruceFullPath = getCurrentDirectory( ) + "\\src\\Network\\c_TYPE_Manager.cpp";
-    replace( &soruceFullPath, "_TYPE_", type );
-    auto cpp = beginEndSpliter( soruceFullPath );
+	string tp;
+	loadFile( getCurrentDirectory( ) + "\\pmake\\MANAGER.h", &tp );
+	tp = convertLF( tp );
 
-    string tyH;
-    loadFile( getCurrentDirectory( ) + "\\pmake\\MANAGER.h", &tyH );
-    tyH = convertLF( tyH );
+	string source = file[0];
+	for ( int i = 0; i < eventEnum.size( ); ++i )
+	{
+		auto tyType = "Event";
+		auto tyEnum = eventEnum[i];
+		auto tyValue = eventClass[i].substr( 1 );
+		auto t = tp;
+		replace( &t, "_PACKET_TYPE_", tyType );
+		replace( &t, "_TEMPLATE_VALUE_", tyValue );
+		source += t;
+	}
+	for ( int i = 0; i < requestEnum.size( ); ++i )
+	{
+		auto tyType = "Request";
+		auto tyEnum = requestEnum[i];
+		auto tyValue = requestClass[i].substr( 1 );
+		auto t = tp;
+		replace( &t, "_PACKET_TYPE_", tyType );
+		replace( &t, "_TEMPLATE_VALUE_", tyValue );
+		source += t;
+	}
+	for ( int i = 0; i < responseEnum.size( ); ++i )
+	{
+		auto tyType = "Response";
+		auto tyEnum = responseEnum[i];
+		auto tyValue = responseClass[i].substr( 1 );
+		auto t = tp;
+		replace( &t, "_PACKET_TYPE_", tyType );
+		replace( &t, "_TEMPLATE_VALUE_", tyValue );
+		source += t;
+	}
+	source += file[1];
 
-    replace( &tyH, "_TYPE_", type );
-    string header = h[0];
-    for ( auto& o : typeClass )
-    {
-        auto valueName = o.substr( 1 ); // 先頭のcを取り除く。
-        string t = tyH;
-        replace( &t, "_TEMPLATE_VALUE_", valueName );
-        header += t;
-    }
-    header += h[1];
-
-    string tyCPP;
-    loadFile( getCurrentDirectory( ) + "\\pmake\\MANAGER.cpp", &tyCPP );
-    tyCPP = convertLF( tyCPP );
-
-    replace( &tyCPP, "_TYPE_", type );
-    string source = cpp[0];
-    for ( auto& o : typeClass )
-    {
-        auto valueName = o.substr( 1 ); // 先頭のcを取り除く。
-        string t = tyCPP;
-        replace( &t, "_TEMPLATE_VALUE_", valueName );
-        source += t;
-    }
-    source += cpp[1];
-
-    header = convertLF( header );
-    if ( writeFileOverwrite( headerFullPath, header ) )
-    {
-        cout << headerFullPath << endl;
-        cout << "の\"begin\"から\"end\"までを書き換えました。" << std::endl;
-    }
-    source = convertLF( source );
-    if ( writeFileOverwrite( soruceFullPath, source ) )
-    {
-        cout << soruceFullPath << endl;
-        cout << "の\"begin\"から\"end\"までを書き換えました。" << std::endl;
-    }
+	source = convertLF( source );
+	if ( writeFileOverwrite( fileFullPath, source ) )
+	{
+		cout << fileFullPath << std::endl;
+		cout << "の\"begin\"から\"end\"までを書き換えました。" << std::endl;
+	}
 }
-void udpManagerReplace( )
+void udpManagerSoruceReplace( )
 {
-    string headerFullPath = getCurrentDirectory( ) + "\\src\\Network\\cUDPManager.cpp";
-    auto cpp = beginEndSpliter( headerFullPath );
+	string fileFullPath = getCurrentDirectory( ) + "\\src\\Network\\cUDPManager.cpp";
+	auto file = beginEndSpliter( fileFullPath );
 
-    string tyCPP;
-    loadFile( getCurrentDirectory( ) + "\\pmake\\CASE", &tyCPP );
-    tyCPP = convertLF( tyCPP );
+	string tp;
+	loadFile( getCurrentDirectory( ) + "\\pmake\\MANAGER.cpp", &tp );
+	tp = convertLF( tp );
 
-    string source = cpp[0];
-    for ( int i = 0; i < eventEnum.size( ); ++i )
-    {
-        auto tyType = "Event";
-        auto tyEnum = eventEnum[i];
-        auto tyValue = eventClass[i].substr( 1 );
-        auto t = tyCPP;
-        replace( &t, "_TEMPLATE_ENUM_", tyEnum );
-        replace( &t, "_PACKET_TYPE_", tyType );
-        replace( &t, "_TEMPLATE_VALUE_", tyValue );
-        source += t;
-    }
-    for ( int i = 0; i < requestEnum.size( ); ++i )
-    {
-        auto tyType = "Request";
-        auto tyEnum = requestEnum[i];
-        auto tyValue = requestClass[i].substr( 1 );
-        auto t = tyCPP;
-        replace( &t, "_TEMPLATE_ENUM_", tyEnum );
-        replace( &t, "_PACKET_TYPE_", tyType );
-        replace( &t, "_TEMPLATE_VALUE_", tyValue );
-        source += t;
-    }
-    for ( int i = 0; i < responseEnum.size( ); ++i )
-    {
-        auto tyType = "Response";
-        auto tyEnum = responseEnum[i];
-        auto tyValue = responseClass[i].substr( 1 );
-        auto t = tyCPP;
-        replace( &t, "_TEMPLATE_ENUM_", tyEnum );
-        replace( &t, "_PACKET_TYPE_", tyType );
-        replace( &t, "_TEMPLATE_VALUE_", tyValue );
-        source += t;
-    }
-    source += cpp[1];
+	string source = file[0];
+	for ( int i = 0; i < eventEnum.size( ); ++i )
+	{
+		auto tyType = "Event";
+		auto tyEnum = eventEnum[i];
+		auto tyValue = eventClass[i].substr( 1 );
+		auto t = tp;
+		replace( &t, "_TEMPLATE_ENUM_", tyEnum );
+		replace( &t, "_PACKET_TYPE_", tyType );
+		replace( &t, "_TEMPLATE_VALUE_", tyValue );
+		source += t;
+	}
+	for ( int i = 0; i < requestEnum.size( ); ++i )
+	{
+		auto tyType = "Request";
+		auto tyEnum = requestEnum[i];
+		auto tyValue = requestClass[i].substr( 1 );
+		auto t = tp;
+		replace( &t, "_TEMPLATE_ENUM_", tyEnum );
+		replace( &t, "_PACKET_TYPE_", tyType );
+		replace( &t, "_TEMPLATE_VALUE_", tyValue );
+		source += t;
+	}
+	for ( int i = 0; i < responseEnum.size( ); ++i )
+	{
+		auto tyType = "Response";
+		auto tyEnum = responseEnum[i];
+		auto tyValue = responseClass[i].substr( 1 );
+		auto t = tp;
+		replace( &t, "_TEMPLATE_ENUM_", tyEnum );
+		replace( &t, "_PACKET_TYPE_", tyType );
+		replace( &t, "_TEMPLATE_VALUE_", tyValue );
+		source += t;
+	}
+	source += file[1];
 
-    source = convertLF( source );
-    if ( writeFileOverwrite( headerFullPath, source ) )
-    {
-        cout << headerFullPath << std::endl;
-        cout << "の\"begin\"から\"end\"までを書き換えました。" << std::endl;
-    }
+	source = convertLF( source );
+	if ( writeFileOverwrite( fileFullPath, source ) )
+	{
+		cout << fileFullPath << std::endl;
+		cout << "の\"begin\"から\"end\"までを書き換えました。" << std::endl;
+	}
 }
 int main( int argv, char* argc [ ] )
 {
@@ -375,13 +371,9 @@ int main( int argv, char* argc [ ] )
     hppReplace( "Request", requestHPP );
     hppReplace( "Response", responseHPP );
 
-    // cEventManager.hなどのメンバーを置き換える。
-    managerReplace( "Event", eventClass );
-    managerReplace( "Request", requestClass );
-    managerReplace( "Response", responseClass );
-
-    // cUdpManager.cppのswitch文を書き換える。
-    udpManagerReplace( );
+    // cUdpManager.hを書き換える。
+    udpManagerHeaderReplace( );
+	udpManagerSoruceReplace( );
 
     std::cout << "3秒後、自動的に終了します。" << std::endl;
     std::this_thread::sleep_for( std::chrono::seconds( 3 ) );
