@@ -255,8 +255,10 @@ void headerSource( std::string folderName, std::vector<std::string> splited, std
     std::string source = currentDir + "\\src" + sourceDir + "\\" + className + ".cpp";
     writeFile( source, createSoruce( splited, className ) );
 }
-int main( )
+int main( int argc, char* argv[] )
 {
+	bool autoCin = false;
+
     TCHAR crDir[MAX_PATH + 1];
     GetCurrentDirectoryA( MAX_PATH + 1, crDir );
     currentDir = crDir;
@@ -273,9 +275,26 @@ int main( )
         return 1;
     }
 
+	if ( ( argc > 1 ) && ( argc != 4 ) )
+	{
+		errorExit( {
+			"不正な引数です。",
+				   } );
+		return 1;
+	}
+
+	autoCin = argc == 4;
+
     string folderName;
     cout << "フォルダ階層を入力してください。[hoge/fuga/piyo]" << endl;
-    cin >> folderName;
+	if ( !autoCin )
+	{
+		cin >> folderName;
+	}
+	else
+	{
+		folderName = argv[1];
+	}
     replace( &folderName, "/", "\\" );
     auto splited = split( folderName, '\\' );
     for ( int i = 0; i < splited.size( ); ++i )
@@ -289,11 +308,25 @@ int main( )
 
     string className;
     cout << "クラス名を入力してください。" << endl;
-    cin >> className;
+	if ( !autoCin )
+	{
+		cin >> className;
+	}
+	else
+	{
+		className = argv[2];
+	}
 
     std::string value;
     cout << "どのファイル構成にしますか？[h/hcpp]" << endl;
-    cin >> value;
+	if ( !autoCin )
+	{
+		cin >> value;
+	}
+	else
+	{
+		value = argv[3];
+	}
     
     if ( value == "h" )
     {
