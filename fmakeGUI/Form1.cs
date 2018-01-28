@@ -16,6 +16,7 @@ namespace fmakeGUI
     {
         string targetDirectory;
         string includeDirectory;
+        string sourceDirectory;
 
         string selectDirectory;
         string SelectDirectory { get { return selectDirectory; } set
@@ -28,10 +29,26 @@ namespace fmakeGUI
         {
             targetDirectory = Directory.GetCurrentDirectory() + @"\";
             includeDirectory = targetDirectory + @"include\";
+            sourceDirectory = targetDirectory + @"src\";
 
             InitializeComponent();
 
+            treeView1.NodeMouseDoubleClick += TreeView1_NodeMouseDoubleClick;
+
             this.ActiveControl = button3;
+        }
+
+        private void TreeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            var name = e.Node.FullPath;
+            if(checkBox2.Checked)
+            {
+                Process.Start(includeDirectory + name + @"\");
+            }
+            if(checkBox3.Checked)
+            {
+                Process.Start(sourceDirectory + name + @"\");
+            }
         }
 
         public bool Init()
@@ -148,8 +165,6 @@ namespace fmakeGUI
             extProcess.StartInfo.Arguments = argNamespace + " " + argFilename + " " + argMode;
 
             extProcess.Start();
-
-            Close();
         }
 
         private void label1_Click(object sender, EventArgs e)
